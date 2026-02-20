@@ -1,0 +1,144 @@
+{
+  "project_name": "PIOGOLD (PIO) ICO Platform",
+  "design_philosophy": {
+    "identity": "The Anti-AI Designer (E1)",
+    "core_principles": [
+      "Fusion over Imitation: Mix Luxury Gold aesthetics with Cyber-Crypto tech.",
+      "Emotion First: Trust, Wealth, and Technological Security.",
+      "Content is King: The 'Gold Price' and 'PIO Value' must be the heroes.",
+      "Negative Space: Luxurious breathing room, do not clutter.",
+      "Contrast: Deep Obsidian backgrounds vs. Pierce Gold accents."
+    ],
+    "archetype": "JEWEL & LUXURY (Premium, Depth, Mystery)",
+    "vibe": "Expensive, cinematic, moody, yet highly functional for trading."
+  },
+  "typography": {
+    "font_family": {
+      "headings": "Playfair Display, serif",
+      "body": "Manrope, sans-serif",
+      "mono": "JetBrains Mono, monospace"
+    },
+    "installation_command": "yarn add @fontsource/playfair-display @fontsource/manrope @fontsource/jetbrains-mono",
+    "usage_rules": {
+      "headings": "Use 'Playfair Display' for H1-H3. Font weights: 700 (Bold) or 400 (Italic) for emphasis. Tracking: tight.",
+      "body": "Use 'Manrope' for all UI text, labels, and inputs. Excellent readability for numbers.",
+      "numbers": "Use 'JetBrains Mono' for wallet addresses, transaction hashes, and live tickers."
+    }
+  },
+  "colors": {
+    "theme": "dark",
+    "palette": {
+      "background": "#050505",
+      "foreground": "#FAFAFA",
+      "card": "#0A0A0A",
+      "card_foreground": "#FAFAFA",
+      "popover": "#0A0A0A",
+      "popover_foreground": "#FAFAFA",
+      "primary": "#D4AF37",
+      "primary_foreground": "#000000",
+      "secondary": "#27272A",
+      "secondary_foreground": "#FAFAFA",
+      "muted": "#18181B",
+      "muted_foreground": "#A1A1AA",
+      "accent": "#FFD700",
+      "accent_foreground": "#000000",
+      "destructive": "#7F1D1D",
+      "destructive_foreground": "#FAFAFA",
+      "border": "#27272A",
+      "input": "#27272A",
+      "ring": "#D4AF37"
+    },
+    "gradients": {
+      "gold_rush": "linear-gradient(135deg, #FFD700 0%, #D4AF37 50%, #B8860B 100%)",
+      "obsidian_shine": "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0) 100%)",
+      "gold_glow": "radial-gradient(circle at center, rgba(212, 175, 55, 0.15) 0%, rgba(0,0,0,0) 70%)"
+    }
+  },
+  "layout_strategy": {
+    "spacing": {
+      "base": "Relaxed. Use p-6, p-8, p-12 standard.",
+      "containers": "Borders must have internal padding (p-6+) to prevent text collision."
+    },
+    "grids": {
+      "dashboard": "Bento Grid (Mode B). Dense but aligned. Gap-4 or Gap-6.",
+      "landing": "Tetris Grid (Mode A). Asymmetrical. Hero col-span-full. Features alternating.",
+      "mobile": "Single column. Max image height 80vh."
+    },
+    "surfaces": {
+      "cards": "Glassmorphism or 'Tracing Beam' borders. bg-black/40 backdrop-blur-xl border border-white/10.",
+      "headers": "Sticky Glass. bg-black/60 backdrop-blur-lg border-b border-white/5.",
+      "modals": "Deep Obsidian. bg-[#0A0A0A] border border-[#D4AF37]/20 shadow-[0_0_40px_rgba(212,175,55,0.1)]."
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "Solid Gold Gradient (gold_rush). Text Black. Rounded-full or Sharp Rect (1px rounded). Hover: Scale 1.05.",
+      "secondary": "Outline Gold. Border border-[#D4AF37]/50 text-[#D4AF37] hover:bg-[#D4AF37]/10.",
+      "ghost": "Text-zinc-400 hover:text-white hover:bg-white/5."
+    },
+    "inputs": {
+      "style": "bg-zinc-900/50 border-zinc-800 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] rounded-md h-12."
+    },
+    "cards": {
+      "base": "bg-card border-border/50 hover:border-[#D4AF37]/30 transition-colors duration-300."
+    },
+    "charts": {
+      "library": "Recharts (via Shadcn Chart)",
+      "colors": {
+        "gold_price": "#FFD700",
+        "pio_price": "#D4AF37",
+        "usdt": "#26A17B"
+      }
+    }
+  },
+  "visual_enhancers": {
+    "textures": "Add subtle 'noise' overlay to the background (opacity 0.03) to reduce digital flatness.",
+    "borders": "Use 'Tracing Beam' effect on the Buy PIO card.",
+    "icons": "Lucide React (Default). Use Gold color for active icons.",
+    "motion": {
+      "library": "framer-motion",
+      "install_command": "yarn add framer-motion",
+      "rules": "Stagger children for lists. Smooth fade-in for pages. Micro-scale on hover."
+    }
+  },
+  "image_urls": {
+    "hero_background": {
+      "url": "https://images.unsplash.com/photo-1643324897599-2a45fd360c8d?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "alt": "Gold textured surface close up",
+      "usage": "Hero section background with heavy overlay/gradient fade."
+    },
+    "gold_coin": {
+      "url": "https://images.unsplash.com/photo-1641457379940-2a6530925721?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "alt": "Gold coin on silver chains",
+      "usage": "Feature section or 'Gold Backed' value prop."
+    },
+    "abstract_waves": {
+      "url": "https://images.unsplash.com/photo-1762279801000-54156801e480?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "alt": "Abstract golden waves",
+      "usage": "Footer background or Section divider."
+    },
+    "3d_structure": {
+      "url": "https://images.pexels.com/photos/30766684/pexels-photo-30766684.png",
+      "alt": "3D abstract geometric gold structure",
+      "usage": "Technology/Blockchain section background."
+    }
+  },
+  "instructions_to_main_agent": [
+    "INSTALL MISSING DEPS: yarn add framer-motion @fontsource/playfair-display @fontsource/manrope @fontsource/jetbrains-mono",
+    "CONFIGURE TAILWIND: Update tailwind.config.js with the Gold color palette provided in 'colors'.",
+    "GLOBAL CSS: Add the noise texture class to body.",
+    "COMPONENTS: Customize Shadcn components. Remove the default 'radius-0.5rem' look if it conflicts with the premium sharp aesthetic (try rounded-sm for a sharper finance look).",
+    "THEME: Force Dark Mode. Do not implement a toggle if the brand is strict Gold/Black.",
+    "NAVBAR: Create a glassmorphic sticky navbar. Logo on left (Gold), Connect Wallet on right (Gold Gradient Button).",
+    "BUY CARD: This is the most important component. Make it stand out with a glow or border beam.",
+    "REFERRAL TREE: Visualize the 3 levels clearly. Use a tree or step diagram.",
+    "ADMIN: Keep it functional but retain the Gold accents for active states."
+  ],
+  "universal_guidelines": [
+    "Do not use generic centered layouts. Use asymmetry.",
+    "Use 'lenis' for smooth scrolling if possible.",
+    "Never use pure black #000000, use #050505.",
+    "Always set explicit hover text colors.",
+    "All interactive elements must have data-testid."
+  ]
+}
