@@ -3,6 +3,7 @@ import { useAccount, useDisconnect, useChainId, useSwitchChain, useBalance } fro
 import { bsc } from 'wagmi/chains';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 const API_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -31,20 +32,29 @@ export const WalletProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [needsReferral, setNeedsReferral] = useState(false);
     
     // Register or get user when wallet connects
     const registerUser = useCallback(async (walletAddress, referrerCode = null) => {
         try {
             setLoading(true);
+            setError(null);
             const response = await axios.post(`${API_URL}/users/register`, {
                 wallet_address: walletAddress,
                 referrer_code: referrerCode
             });
             setUser(response.data);
+            setNeedsReferral(false);
             return response.data;
         } catch (err) {
             console.error('Error registering user:', err);
-            setError(err.message);
+            const errorMsg = err.response?.data?.detail || err.message;
+            setError(errorMsg);
+            
+            if (errorMsg.includes('Referral code is required') || errorMsg.includes('Invalid referral code')) {
+                setNeedsReferral(true);
+                toast.error('A valid referral code is required to register');
+            }
             return null;
         } finally {
             setLoading(false);
@@ -57,10 +67,11 @@ export const WalletProvider = ({ children }) => {
             setLoading(true);
             const response = await axios.get(`${API_URL}/users/${walletAddress}`);
             setUser(response.data);
+            setNeedsReferral(false);
             return response.data;
         } catch (err) {
             if (err.response?.status === 404) {
-                // User not found, will register
+                // User not found, will need to register with referral
                 return null;
             }
             console.error('Error fetching user:', err);
