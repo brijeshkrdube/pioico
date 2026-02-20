@@ -108,8 +108,8 @@ const TermsPage = () => (
                     <h2 className="text-xl font-semibold text-white">4. No Guaranteed Returns</h2>
                     <p>PIOGOLD does not guarantee any returns on investment. Users should only invest what they can afford to lose.</p>
                     
-                    <h2 className="text-xl font-semibold text-white">5. Gold-Backed Value</h2>
-                    <p>While PIO is pegged to gold value, the actual price is admin-controlled and may not reflect real-time gold market prices.</p>
+                    <h2 className="text-xl font-semibold text-white">5. Gold-Pegged Value</h2>
+                    <p>PIO is pegged to gold value, where each coin represents 1 gram of gold. The price reflects current gold market conditions.</p>
                 </div>
             </div>
         </div>
@@ -150,8 +150,8 @@ const DisclaimerPage = () => (
                 <h2 className="text-xl font-semibold text-white">Price Volatility</h2>
                 <p>While PIO is pegged to gold value, cryptocurrency markets are volatile. Gold prices also fluctuate based on global market conditions.</p>
                 
-                <h2 className="text-xl font-semibold text-white">Admin-Controlled Pricing</h2>
-                <p>PIO price is manually set by platform administrators and may not reflect real-time gold market prices at all times.</p>
+                <h2 className="text-xl font-semibold text-white">Gold-Pegged Pricing</h2>
+                <p>PIO is a gold-pegged cryptocurrency where 1 PIO represents 1 gram of gold value. Prices reflect current gold market conditions.</p>
                 
                 <h2 className="text-xl font-semibold text-white">No Investment Advice</h2>
                 <p>Information on this platform does not constitute financial advice. Consult with qualified professionals before investing.</p>
