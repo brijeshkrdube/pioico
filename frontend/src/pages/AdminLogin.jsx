@@ -47,9 +47,7 @@ const AdminLogin = () => {
             >
                 <Card className="glass-card border-zinc-800">
                     <CardHeader className="text-center">
-                        <div className="w-16 h-16 mx-auto rounded-full gold-gradient flex items-center justify-center mb-4">
-                            <Lock className="w-8 h-8 text-black" />
-                        </div>
+                        <img src="/logo.png" alt="PIOGOLD" className="w-16 h-16 mx-auto object-contain mb-4" />
                         <CardTitle className="font-serif text-2xl text-white">
                             Admin {isSetup ? 'Setup' : 'Login'}
                         </CardTitle>
