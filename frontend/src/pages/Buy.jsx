@@ -104,10 +104,9 @@ const Buy = () => {
                             </div>
                         </div>
                         
-                        {/* Disclaimer */}
                         <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
                             <p className="text-yellow-500 text-sm">
-                                <strong>Important:</strong> PIO price is set by admin and pegged to gold value. 
+                                <strong>Important:</strong> PIO is a gold-pegged cryptocurrency where 1 PIO = 1 gram of gold value. 
                                 Cryptocurrency investments carry risks. Only invest what you can afford to lose.
                             </p>
                         </div>

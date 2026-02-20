@@ -79,7 +79,7 @@ const Footer = () => {
                 {/* Disclaimer */}
                 <div className="mt-8 pt-8 border-t border-zinc-800">
                     <p className="text-zinc-600 text-xs leading-relaxed">
-                        <strong className="text-zinc-500">Disclaimer:</strong> PIO price is admin-controlled and pegged to gold value. 
+                        <strong className="text-zinc-500">Disclaimer:</strong> PIO is a gold-pegged cryptocurrency where each coin represents 1 gram of gold value. 
                         Gold prices may fluctuate based on market conditions. This ICO does not guarantee returns. 
                         Cryptocurrency investments carry inherent risks. Please conduct your own research before investing.
                     </p>
