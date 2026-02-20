@@ -39,9 +39,7 @@ const Navbar = () => {
                 <div className="flex items-center justify-between h-16 md:h-20">
                     {/* Logo */}
                     <Link to="/" className="flex items-center space-x-2" data-testid="logo-link">
-                        <div className="w-10 h-10 rounded-full gold-gradient flex items-center justify-center">
-                            <span className="text-black font-bold text-lg font-serif">P</span>
-                        </div>
+                        <img src="/logo.png" alt="PIOGOLD" className="w-10 h-10 object-contain" />
                         <span className="text-xl font-bold font-serif gold-gradient-text hidden sm:block">
                             PIOGOLD
                         </span>
