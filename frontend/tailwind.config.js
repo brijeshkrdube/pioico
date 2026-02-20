@@ -61,7 +61,7 @@ module.exports = {
                 }
             },
             fontFamily: {
-                serif: ['Roboto', 'sans-serif'],
+                serif: ['Moonhouse', 'sans-serif'],
                 sans: ['Roboto', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
                 mono: ['Roboto Mono', 'monospace'],
             },
