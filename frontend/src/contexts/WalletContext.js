@@ -119,6 +119,7 @@ export const WalletProvider = ({ children }) => {
     const disconnectWallet = useCallback(() => {
         disconnect();
         setUser(null);
+        setNeedsReferral(false);
     }, [disconnect]);
     
     const value = {
@@ -128,12 +129,14 @@ export const WalletProvider = ({ children }) => {
         user,
         loading,
         error,
+        needsReferral,
         bnbBalance: bnbBalance?.formatted || '0',
         connectWallet,
         disconnectWallet,
         ensureBSC,
         isBSC: chainId === bsc.id,
         fetchUser,
+        registerUser,
     };
     
     return (
