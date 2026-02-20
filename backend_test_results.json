@@ -1,0 +1,114 @@
+[
+  {
+    "test_name": "Health Check",
+    "success": true,
+    "details": "Response: {\n  \"status\": \"healthy\",\n  \"bsc_connected\": true,\n  \"piogold_connected\": true\n}",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:50.586991"
+  },
+  {
+    "test_name": "Public Settings",
+    "success": true,
+    "details": "Response: {\n  \"gold_price_per_gram\": 85.0,\n  \"ico_active\": true,\n  \"ico_wallet_address\": \"\",\n  \"days_since_start\": 0,\n  \"offers\": []\n}",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:50.695043"
+  },
+  {
+    "test_name": "Calculate Purchase - $100",
+    "success": true,
+    "details": "Response: {\n  \"usdt_amount\": 100.0,\n  \"gold_price\": 85.0,\n  \"base_pio\": 1.17647059,\n  \"discount_percent\": 0.0,\n  \"bonus_pio\": 0.0,\n  \"total_pio\": 1.17647059,\n  \"discount_tier\": null\n}",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:50.810553"
+  },
+  {
+    "test_name": "Calculate Purchase - $500",
+    "success": true,
+    "details": "Response: {\n  \"usdt_amount\": 500.0,\n  \"gold_price\": 85.0,\n  \"base_pio\": 5.88235294,\n  \"discount_percent\": 0.0,\n  \"bonus_pio\": 0.0,\n  \"total_pio\": 5.88235294,\n  \"discount_tier\": null\n}",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:50.921693"
+  },
+  {
+    "test_name": "Calculate Purchase - $800",
+    "success": true,
+    "details": "Response: {\n  \"usdt_amount\": 800.0,\n  \"gold_price\": 85.0,\n  \"base_pio\": 9.41176471,\n  \"discount_percent\": 0.0,\n  \"bonus_pio\": 0.0,\n  \"total_pio\": 9.41176471,\n  \"discount_tier\": null\n}",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:51.116913"
+  },
+  {
+    "test_name": "Admin Setup",
+    "success": true,
+    "details": "Response: {\n  \"message\": \"Admin created\",\n  \"access_token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZTA1ZGViNS05ZDMwLTRjZWUtYTJiYi0yODgzMzhkYzY0N2MiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzcxNjU1NjkxfQ.a",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:51.523490"
+  },
+  {
+    "test_name": "Admin Settings Get",
+    "success": true,
+    "details": "Response: {\n  \"gold_price_per_gram\": 85.0,\n  \"ico_start_date\": \"2026-02-20T06:32:17.883781+00:00\",\n  \"ico_active\": true,\n  \"ico_wallet_address\": \"\",\n  \"has_private_key\": false\n}",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:51.639807"
+  },
+  {
+    "test_name": "Admin Stats",
+    "success": true,
+    "details": "Response: {\n  \"total_users\": 0,\n  \"total_orders\": 0,\n  \"completed_orders\": 0,\n  \"total_usdt_raised\": 0,\n  \"total_pio_sold\": 0,\n  \"pending_referrals\": 0,\n  \"pending_referral_pio\": 0\n}",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:51.757096"
+  },
+  {
+    "test_name": "Admin Offers List",
+    "success": true,
+    "details": "Response: [\n  {\n    \"id\": \"8a7ddc2c-e3b5-4b5b-88a7-9b7b04595796\",\n    \"is_active\": true,\n    \"created_at\": \"2026-02-20T06:34:51.506746+00:00\",\n    \"min_usdt\": 50,\n    \"max_usdt\": 299,\n    \"discount_percent\": 5,",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:51.873035"
+  },
+  {
+    "test_name": "User Registration",
+    "success": true,
+    "details": "Response: {\n  \"id\": \"f45e0dc8-0e25-4e5f-a461-8cafeff68899\",\n  \"wallet_address\": \"0x742d35cc6451c532c5b5f3d5c8a3b8f9e34ad0d1\",\n  \"referral_code\": \"11569C7B\",\n  \"referrer_id\": null,\n  \"created_at\": \"2026-02-20T06",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:52.042101"
+  },
+  {
+    "test_name": "Get User",
+    "success": true,
+    "details": "Response: {\n  \"id\": \"f45e0dc8-0e25-4e5f-a461-8cafeff68899\",\n  \"wallet_address\": \"0x742d35cc6451c532c5b5f3d5c8a3b8f9e34ad0d1\",\n  \"referral_code\": \"11569C7B\",\n  \"referrer_id\": null,\n  \"created_at\": \"2026-02-20T06",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:52.149463"
+  },
+  {
+    "test_name": "User Orders",
+    "success": true,
+    "details": "Response: []",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:52.282209"
+  },
+  {
+    "test_name": "User Referrals",
+    "success": true,
+    "details": "Response: {\n  \"referral_code\": \"11569C7B\",\n  \"total_referrals\": 0,\n  \"level_stats\": {\n    \"1\": {\n      \"count\": 0,\n      \"earnings\": 0\n    },\n    \"2\": {\n      \"count\": 0,\n      \"earnings\": 0\n    },\n    \"3\": {\n ",
+    "expected_status": 200,
+    "actual_status": 200,
+    "timestamp": "2026-02-20T06:34:52.391272"
+  },
+  {
+    "test_name": "Order Creation",
+    "success": false,
+    "details": "Expected 200, got 400. Response: {'detail': 'ICO wallet not configured'}",
+    "expected_status": 200,
+    "actual_status": 400,
+    "timestamp": "2026-02-20T06:34:52.516967"
+  }
+]
