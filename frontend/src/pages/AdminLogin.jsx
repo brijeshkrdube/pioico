@@ -117,16 +117,6 @@ const AdminLogin = () => {
                                 )}
                             </Button>
                         </form>
-                        
-                        <div className="mt-6 text-center">
-                            <button
-                                type="button"
-                                onClick={() => setIsSetup(!isSetup)}
-                                className="text-gold hover:underline text-sm"
-                            >
-                                {isSetup ? 'Already have an account? Login' : 'First time? Setup admin'}
-                            </button>
-                        </div>
                     </CardContent>
                 </Card>
             </motion.div>
