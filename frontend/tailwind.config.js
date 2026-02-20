@@ -61,9 +61,9 @@ module.exports = {
                 }
             },
             fontFamily: {
-                serif: ['Playfair Display', 'Georgia', 'serif'],
-                sans: ['Manrope', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-                mono: ['JetBrains Mono', 'monospace'],
+                serif: ['Roboto', 'sans-serif'],
+                sans: ['Roboto', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                mono: ['Roboto Mono', 'monospace'],
             },
             borderRadius: {
                 lg: 'var(--radius)',
