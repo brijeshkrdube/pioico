@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowRight, Loader2, Check, AlertCircle, Coins } from 'lucide-react';
+import { ArrowRight, Loader2, Check, AlertCircle, Coins, UserPlus } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
@@ -15,7 +15,7 @@ import { toast } from 'sonner';
 const API_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const PurchaseCard = () => {
-    const { address, isConnected, connectWallet, isBSC, ensureBSC } = useWallet();
+    const { address, isConnected, connectWallet, isBSC, ensureBSC, user, needsReferral, registerUser } = useWallet();
     const { switchChain } = useSwitchChain();
     const { writeContract, data: hash, isPending, error: writeError } = useWriteContract();
     const { isLoading: isConfirming, isSuccess: isConfirmed } = useWaitForTransactionReceipt({ hash });
@@ -25,6 +25,8 @@ const PurchaseCard = () => {
     const [settings, setSettings] = useState(null);
     const [orderStatus, setOrderStatus] = useState(null);
     const [loadingCalc, setLoadingCalc] = useState(false);
+    const [referralCode, setReferralCode] = useState('');
+    const [registeringWithRef, setRegisteringWithRef] = useState(false);
     
     // Fetch public settings
     useEffect(() => {
@@ -38,6 +40,20 @@ const PurchaseCard = () => {
         };
         fetchSettings();
     }, []);
+    
+    // Handle registration with referral code
+    const handleRegisterWithReferral = async () => {
+        if (!referralCode.trim()) {
+            toast.error('Please enter a referral code');
+            return;
+        }
+        setRegisteringWithRef(true);
+        const result = await registerUser(address, referralCode.trim());
+        setRegisteringWithRef(false);
+        if (result) {
+            toast.success('Registration successful!');
+        }
+    };
     
     // Calculate PIO when amount changes
     const calculatePurchase = useCallback(async (amount) => {
