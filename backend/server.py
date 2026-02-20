@@ -899,9 +899,89 @@ async def get_stats(admin = Depends(get_current_admin)):
 
 @api_router.get("/admin/users")
 async def get_all_users(admin = Depends(get_current_admin), limit: int = 100):
-    """Get all users"""
+    """Get all users with summary stats"""
     users = await db.users.find({}, {"_id": 0}).sort("created_at", -1).to_list(limit)
+    
+    # Add direct referral count for each user
+    for user in users:
+        direct_count = await db.users.count_documents({"referrer_id": user["id"]})
+        user["direct_referrals"] = direct_count
+    
     return users
+
+@api_router.get("/admin/users/{user_id}/details")
+async def get_user_details(user_id: str, admin = Depends(get_current_admin)):
+    """Get detailed user info with team and earnings"""
+    user = await db.users.find_one({"id": user_id}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Get user's orders/purchases
+    orders = await db.orders.find({"user_id": user_id}, {"_id": 0}).sort("created_at", -1).to_list(100)
+    
+    # Get direct team (Level 1)
+    direct_team = await db.users.find({"referrer_id": user_id}, {"_id": 0}).to_list(100)
+    
+    # Get Level 2 team
+    level2_team = []
+    for member in direct_team:
+        l2_members = await db.users.find({"referrer_id": member["id"]}, {"_id": 0}).to_list(100)
+        level2_team.extend(l2_members)
+    
+    # Get Level 3 team
+    level3_team = []
+    for member in level2_team:
+        l3_members = await db.users.find({"referrer_id": member["id"]}, {"_id": 0}).to_list(100)
+        level3_team.extend(l3_members)
+    
+    # Get referral earnings
+    referral_earnings = await db.referrals.find({"referrer_id": user_id}, {"_id": 0}).sort("created_at", -1).to_list(100)
+    
+    # Calculate totals by level
+    level_earnings = {1: 0, 2: 0, 3: 0}
+    for ref in referral_earnings:
+        level = ref.get("level", 1)
+        if level in level_earnings:
+            level_earnings[level] += ref.get("reward_pio", 0)
+    
+    total_earnings = sum(level_earnings.values())
+    pending_earnings = sum(ref.get("reward_pio", 0) for ref in referral_earnings if ref.get("status") == "pending")
+    paid_earnings = sum(ref.get("reward_pio", 0) for ref in referral_earnings if ref.get("status") == "paid")
+    
+    # Get referrer info if exists
+    referrer = None
+    if user.get("referrer_id"):
+        referrer = await db.users.find_one({"id": user["referrer_id"]}, {"_id": 0, "wallet_address": 1, "referral_code": 1})
+    
+    return {
+        "user": user,
+        "referrer": referrer,
+        "orders": orders,
+        "team": {
+            "level1": {
+                "count": len(direct_team),
+                "members": direct_team
+            },
+            "level2": {
+                "count": len(level2_team),
+                "members": level2_team
+            },
+            "level3": {
+                "count": len(level3_team),
+                "members": level3_team
+            },
+            "total_team": len(direct_team) + len(level2_team) + len(level3_team)
+        },
+        "earnings": {
+            "level1": round(level_earnings[1], 8),
+            "level2": round(level_earnings[2], 8),
+            "level3": round(level_earnings[3], 8),
+            "total": round(total_earnings, 8),
+            "pending": round(pending_earnings, 8),
+            "paid": round(paid_earnings, 8),
+            "history": referral_earnings[:20]
+        }
+    }
 
 # Include the router in the main app
 app.include_router(api_router)
