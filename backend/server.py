@@ -312,26 +312,40 @@ async def verify_usdt_transaction(tx_hash: str, expected_amount: float, expected
         if receipt['status'] != 1:
             return {"valid": False, "error": "Transaction failed"}
         
-        if tx['to'].lower() != USDT_CONTRACT.lower():
+        # Check if it's a USDT contract call
+        if tx['to'] and tx['to'].lower() != USDT_CONTRACT.lower():
             return {"valid": False, "error": "Not a USDT transaction"}
         
+        # Get input data as hex string
+        input_data = tx['input']
+        if isinstance(input_data, bytes):
+            input_data = '0x' + input_data.hex()
+        elif not input_data.startswith('0x'):
+            input_data = '0x' + input_data
+        
         # Decode transfer data
-        if len(tx['input']) >= 138:
-            method_id = tx['input'][:10]
+        if len(input_data) >= 138:
+            method_id = input_data[:10].lower()
             if method_id == '0xa9059cbb':  # transfer method
-                recipient = '0x' + tx['input'][34:74]
-                amount_hex = tx['input'][74:138]
+                # Extract recipient (padded to 32 bytes, address is last 20 bytes)
+                recipient_hex = input_data[10:74]
+                recipient = '0x' + recipient_hex[-40:]  # Last 40 hex chars = 20 bytes
+                
+                # Extract amount
+                amount_hex = input_data[74:138]
                 amount = int(amount_hex, 16) / 10**18
                 
+                logger.info(f"TX decoded: recipient={recipient}, amount={amount}, expected_recipient={expected_recipient}")
+                
                 if recipient.lower() != expected_recipient.lower():
-                    return {"valid": False, "error": "Wrong recipient"}
+                    return {"valid": False, "error": f"Wrong recipient: expected {expected_recipient}, got {recipient}"}
                 
                 if amount < expected_amount * 0.99:  # Allow 1% tolerance
                     return {"valid": False, "error": f"Amount mismatch: expected {expected_amount}, got {amount}"}
                 
                 return {"valid": True, "amount": amount, "from": tx['from'], "to": recipient}
         
-        return {"valid": False, "error": "Could not decode transaction"}
+        return {"valid": False, "error": f"Could not decode transaction, input length: {len(input_data)}"}
     except Exception as e:
         logger.error(f"TX verification error: {e}")
         return {"valid": False, "error": str(e)}
