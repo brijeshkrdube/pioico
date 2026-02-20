@@ -830,6 +830,216 @@ const AdminDashboard = () => {
                     </TabsContent>
                 </Tabs>
             </div>
+            
+            {/* User Details Modal */}
+            <AnimatePresence>
+                {selectedUser && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                        onClick={closeUserModal}
+                    >
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            className="bg-obsidian-light border border-zinc-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {loadingUser ? (
+                                <div className="p-8 text-center">
+                                    <Loader2 className="w-8 h-8 animate-spin text-gold mx-auto" />
+                                    <p className="text-zinc-400 mt-4">Loading user details...</p>
+                                </div>
+                            ) : userDetails ? (
+                                <>
+                                    {/* Modal Header */}
+                                    <div className="flex items-center justify-between p-6 border-b border-zinc-800">
+                                        <div>
+                                            <h2 className="text-xl font-bold text-white">User Details</h2>
+                                            <p className="text-zinc-400 font-mono text-sm mt-1">
+                                                {userDetails.user.wallet_address}
+                                            </p>
+                                        </div>
+                                        <Button variant="ghost" size="sm" onClick={closeUserModal}>
+                                            <X className="w-5 h-5" />
+                                        </Button>
+                                    </div>
+                                    
+                                    {/* Modal Content */}
+                                    <div className="p-6 space-y-6">
+                                        {/* User Stats */}
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            <div className="bg-zinc-900/50 rounded-lg p-4">
+                                                <p className="text-zinc-400 text-sm">Referral Code</p>
+                                                <p className="text-gold font-mono text-lg font-bold">{userDetails.user.referral_code}</p>
+                                            </div>
+                                            <div className="bg-zinc-900/50 rounded-lg p-4">
+                                                <p className="text-zinc-400 text-sm">Total Spent</p>
+                                                <p className="text-white text-lg font-bold">${userDetails.user.total_purchased_usdt?.toFixed(2) || '0.00'}</p>
+                                            </div>
+                                            <div className="bg-zinc-900/50 rounded-lg p-4">
+                                                <p className="text-zinc-400 text-sm">PIO Received</p>
+                                                <p className="text-gold text-lg font-bold">{userDetails.user.total_pio_received?.toFixed(4) || '0.0000'}</p>
+                                            </div>
+                                            <div className="bg-zinc-900/50 rounded-lg p-4">
+                                                <p className="text-zinc-400 text-sm">Joined</p>
+                                                <p className="text-white text-lg font-bold">{new Date(userDetails.user.created_at).toLocaleDateString()}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Referrer Info */}
+                                        {userDetails.referrer && (
+                                            <div className="bg-zinc-900/50 rounded-lg p-4">
+                                                <p className="text-zinc-400 text-sm mb-2">Referred By</p>
+                                                <p className="text-white font-mono text-sm">{userDetails.referrer.wallet_address}</p>
+                                                <p className="text-gold text-sm">Code: {userDetails.referrer.referral_code}</p>
+                                            </div>
+                                        )}
+                                        
+                                        {/* Team Stats */}
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                                                <Users className="w-5 h-5 mr-2 text-gold" />
+                                                Team Overview (Total: {userDetails.team.total_team})
+                                            </h3>
+                                            <div className="grid grid-cols-3 gap-4">
+                                                <div className="bg-gold/10 border border-gold/30 rounded-lg p-4 text-center">
+                                                    <p className="text-gold text-2xl font-bold">{userDetails.team.level1.count}</p>
+                                                    <p className="text-zinc-400 text-sm">Level 1 (Direct)</p>
+                                                    <p className="text-green-500 text-xs mt-1">10% Commission</p>
+                                                </div>
+                                                <div className="bg-zinc-900/50 border border-zinc-700 rounded-lg p-4 text-center">
+                                                    <p className="text-white text-2xl font-bold">{userDetails.team.level2.count}</p>
+                                                    <p className="text-zinc-400 text-sm">Level 2</p>
+                                                    <p className="text-green-500 text-xs mt-1">5% Commission</p>
+                                                </div>
+                                                <div className="bg-zinc-900/50 border border-zinc-700 rounded-lg p-4 text-center">
+                                                    <p className="text-white text-2xl font-bold">{userDetails.team.level3.count}</p>
+                                                    <p className="text-zinc-400 text-sm">Level 3</p>
+                                                    <p className="text-green-500 text-xs mt-1">3% Commission</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Earnings */}
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                                                <Coins className="w-5 h-5 mr-2 text-gold" />
+                                                Referral Earnings
+                                            </h3>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                                <div className="bg-zinc-900/50 rounded-lg p-4">
+                                                    <p className="text-zinc-400 text-sm">Level 1</p>
+                                                    <p className="text-gold font-mono">{userDetails.earnings.level1?.toFixed(6)} PIO</p>
+                                                </div>
+                                                <div className="bg-zinc-900/50 rounded-lg p-4">
+                                                    <p className="text-zinc-400 text-sm">Level 2</p>
+                                                    <p className="text-gold font-mono">{userDetails.earnings.level2?.toFixed(6)} PIO</p>
+                                                </div>
+                                                <div className="bg-zinc-900/50 rounded-lg p-4">
+                                                    <p className="text-zinc-400 text-sm">Level 3</p>
+                                                    <p className="text-gold font-mono">{userDetails.earnings.level3?.toFixed(6)} PIO</p>
+                                                </div>
+                                                <div className="bg-gold/10 border border-gold/30 rounded-lg p-4">
+                                                    <p className="text-gold text-sm">Total Earnings</p>
+                                                    <p className="text-gold font-mono font-bold">{userDetails.earnings.total?.toFixed(6)} PIO</p>
+                                                </div>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4 mt-4">
+                                                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
+                                                    <p className="text-yellow-500 text-sm">Pending</p>
+                                                    <p className="text-yellow-500 font-mono">{userDetails.earnings.pending?.toFixed(6)} PIO</p>
+                                                </div>
+                                                <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                                                    <p className="text-green-500 text-sm">Paid</p>
+                                                    <p className="text-green-500 font-mono">{userDetails.earnings.paid?.toFixed(6)} PIO</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        {/* Purchase History */}
+                                        <div>
+                                            <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                                                <Package className="w-5 h-5 mr-2 text-gold" />
+                                                Purchase History ({userDetails.orders.length})
+                                            </h3>
+                                            {userDetails.orders.length > 0 ? (
+                                                <div className="overflow-x-auto">
+                                                    <table className="w-full">
+                                                        <thead>
+                                                            <tr className="border-b border-zinc-800">
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">Date</th>
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">USDT</th>
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">PIO</th>
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">Bonus</th>
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">Status</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {userDetails.orders.map((order) => (
+                                                                <tr key={order.id} className="border-b border-zinc-800/50">
+                                                                    <td className="py-2 px-2 text-white text-sm">{new Date(order.created_at).toLocaleDateString()}</td>
+                                                                    <td className="py-2 px-2 text-white font-mono text-sm">${order.usdt_amount}</td>
+                                                                    <td className="py-2 px-2 text-gold font-mono text-sm">{order.total_pio?.toFixed(4)}</td>
+                                                                    <td className="py-2 px-2 text-green-500 text-sm">{order.discount_percent > 0 ? `+${order.discount_percent}%` : '-'}</td>
+                                                                    <td className="py-2 px-2">
+                                                                        <span className={`text-xs px-2 py-1 rounded ${
+                                                                            order.status === 'completed' ? 'bg-green-500/20 text-green-500' :
+                                                                            order.status.includes('failed') ? 'bg-red-500/20 text-red-500' :
+                                                                            'bg-yellow-500/20 text-yellow-500'
+                                                                        }`}>{order.status}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            ) : (
+                                                <p className="text-zinc-500 text-center py-4">No purchases yet</p>
+                                            )}
+                                        </div>
+                                        
+                                        {/* Direct Team Members */}
+                                        {userDetails.team.level1.count > 0 && (
+                                            <div>
+                                                <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
+                                                    <Users className="w-5 h-5 mr-2 text-gold" />
+                                                    Direct Team Members ({userDetails.team.level1.count})
+                                                </h3>
+                                                <div className="overflow-x-auto">
+                                                    <table className="w-full">
+                                                        <thead>
+                                                            <tr className="border-b border-zinc-800">
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">Wallet</th>
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">Joined</th>
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">Spent</th>
+                                                                <th className="text-left py-2 px-2 text-zinc-400 text-sm">PIO</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {userDetails.team.level1.members.slice(0, 10).map((member) => (
+                                                                <tr key={member.id} className="border-b border-zinc-800/50">
+                                                                    <td className="py-2 px-2 text-white font-mono text-sm">{member.wallet_address?.slice(0, 8)}...{member.wallet_address?.slice(-6)}</td>
+                                                                    <td className="py-2 px-2 text-zinc-400 text-sm">{new Date(member.created_at).toLocaleDateString()}</td>
+                                                                    <td className="py-2 px-2 text-white font-mono text-sm">${member.total_purchased_usdt?.toFixed(2) || '0.00'}</td>
+                                                                    <td className="py-2 px-2 text-gold font-mono text-sm">{member.total_pio_received?.toFixed(4) || '0.0000'}</td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </>
+                            ) : null}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };
