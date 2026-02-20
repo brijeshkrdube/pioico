@@ -100,6 +100,27 @@ const AdminDashboard = () => {
         }
     };
     
+    const fetchUserDetails = async (userId) => {
+        try {
+            setLoadingUser(true);
+            setSelectedUser(userId);
+            const response = await axios.get(`${API_URL}/admin/users/${userId}/details`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            setUserDetails(response.data);
+        } catch (err) {
+            toast.error('Failed to load user details');
+            setSelectedUser(null);
+        } finally {
+            setLoadingUser(false);
+        }
+    };
+    
+    const closeUserModal = () => {
+        setSelectedUser(null);
+        setUserDetails(null);
+    };
+    
     const handleSaveSettings = async () => {
         try {
             const updates = {};
