@@ -143,9 +143,7 @@ const Home = () => {
                                 <Card className="glass-card border-gold/20 overflow-hidden">
                                     <CardContent className="p-8">
                                         <div className="text-center mb-6">
-                                            <div className="w-20 h-20 mx-auto rounded-full gold-gradient flex items-center justify-center mb-4">
-                                                <span className="text-black font-bold text-3xl font-serif">P</span>
-                                            </div>
+                                            <img src="/logo.png" alt="PIOGOLD" className="w-20 h-20 mx-auto object-contain mb-4" />
                                             <h3 className="text-2xl font-serif font-bold text-white">PIOGOLD</h3>
                                             <p className="text-zinc-400">Native Coin</p>
                                         </div>
