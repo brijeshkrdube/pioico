@@ -446,12 +446,16 @@ async def register_user(data: UserCreate):
     if existing:
         return UserResponse(**existing)
     
-    # Find referrer if code provided
-    referrer_id = None
-    if data.referrer_code:
-        referrer = await db.users.find_one({"referral_code": data.referrer_code.upper()}, {"_id": 0})
-        if referrer:
-            referrer_id = referrer["id"]
+    # NEW: Require referral code for new registrations
+    if not data.referrer_code:
+        raise HTTPException(status_code=400, detail="Referral code is required for registration")
+    
+    # Find referrer - must exist
+    referrer = await db.users.find_one({"referral_code": data.referrer_code.upper()}, {"_id": 0})
+    if not referrer:
+        raise HTTPException(status_code=400, detail="Invalid referral code")
+    
+    referrer_id = referrer["id"]
     
     user = {
         "id": str(uuid.uuid4()),
