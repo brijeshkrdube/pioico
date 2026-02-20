@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
     Settings, Users, Package, CreditCard, Gift, LogOut, DollarSign,
-    Coins, PauseCircle, PlayCircle, Loader2, RefreshCw, AlertTriangle
+    Coins, PauseCircle, PlayCircle, Loader2, RefreshCw, AlertTriangle,
+    Eye, X, ChevronDown, ChevronUp, Wallet
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -11,13 +12,16 @@ import { Label } from '../components/ui/label';
 import { Switch } from '../components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { useAdmin } from '../contexts/AdminContext';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import axios from 'axios';
+
+const API_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const {
-        isAuthenticated, logout, loading,
+        isAuthenticated, logout, loading, token,
         getSettings, updateSettings, pauseICO, resumeICO,
         getOffers, createOffer, updateOffer, deleteOffer,
         getOrders, getTransactions, getReferrals, updateReferralStatus,
@@ -33,6 +37,11 @@ const AdminDashboard = () => {
     const [users, setUsers] = useState([]);
     const [activeTab, setActiveTab] = useState('overview');
     const [refreshing, setRefreshing] = useState(false);
+    
+    // User details modal
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [userDetails, setUserDetails] = useState(null);
+    const [loadingUser, setLoadingUser] = useState(false);
     
     // Settings form
     const [settingsForm, setSettingsForm] = useState({
