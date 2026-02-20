@@ -201,6 +201,60 @@ const PurchaseCard = () => {
         setOrderStatus(null);
     };
     
+    // Show referral code input if user needs to register
+    if (isConnected && needsReferral && !user) {
+        return (
+            <Card className="glass-card border-gold/20 gold-glow overflow-hidden" data-testid="referral-required-card">
+                <CardHeader className="border-b border-zinc-800 pb-6">
+                    <CardTitle className="flex items-center space-x-2">
+                        <UserPlus className="w-6 h-6 text-gold" />
+                        <span className="font-serif text-xl text-white">Registration Required</span>
+                    </CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 space-y-6">
+                    <div className="text-center">
+                        <p className="text-zinc-400 mb-4">
+                            To participate in the ICO, you need a valid referral code.
+                        </p>
+                        <p className="text-zinc-500 text-sm">
+                            Ask a friend who's already registered for their referral code.
+                        </p>
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <label className="text-sm text-zinc-400">Enter Referral Code</label>
+                        <Input
+                            type="text"
+                            placeholder="e.g., ABC12345"
+                            value={referralCode}
+                            onChange={(e) => setReferralCode(e.target.value.toUpperCase())}
+                            className="bg-zinc-900/50 border-zinc-800 h-14 text-lg text-center font-mono uppercase tracking-widest focus:border-gold"
+                            maxLength={8}
+                            data-testid="referral-code-input"
+                        />
+                    </div>
+                    
+                    <Button
+                        onClick={handleRegisterWithReferral}
+                        disabled={registeringWithRef || !referralCode.trim()}
+                        className="w-full h-14 gold-gradient text-black font-semibold text-lg btn-gold disabled:opacity-50"
+                        data-testid="register-with-referral-btn"
+                    >
+                        {registeringWithRef ? (
+                            <><Loader2 className="w-5 h-5 mr-2 animate-spin" /> Registering...</>
+                        ) : (
+                            'Register & Continue'
+                        )}
+                    </Button>
+                    
+                    <p className="text-xs text-zinc-600 text-center">
+                        Connected: {address?.slice(0, 6)}...{address?.slice(-4)}
+                    </p>
+                </CardContent>
+            </Card>
+        );
+    }
+    
     if (orderStatus?.status === 'completed') {
         return (
             <Card className="glass-card border-gold/20 gold-glow overflow-hidden">
