@@ -440,6 +440,76 @@ const AdminDashboard = () => {
                         </div>
                     </TabsContent>
                     
+                    {/* Users Tab */}
+                    <TabsContent value="users">
+                        <Card className="glass-card border-zinc-800">
+                            <CardHeader>
+                                <CardTitle className="font-serif text-white">All Users ({users.length})</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="overflow-x-auto">
+                                    <table className="w-full">
+                                        <thead>
+                                            <tr className="border-b border-zinc-800">
+                                                <th className="text-left py-3 px-2 text-zinc-400 text-sm">Date</th>
+                                                <th className="text-left py-3 px-2 text-zinc-400 text-sm">Wallet</th>
+                                                <th className="text-left py-3 px-2 text-zinc-400 text-sm">Referral Code</th>
+                                                <th className="text-left py-3 px-2 text-zinc-400 text-sm">Total USDT</th>
+                                                <th className="text-left py-3 px-2 text-zinc-400 text-sm">Total PIO</th>
+                                                <th className="text-left py-3 px-2 text-zinc-400 text-sm">Direct Team</th>
+                                                <th className="text-left py-3 px-2 text-zinc-400 text-sm">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {users.map((user) => (
+                                                <tr key={user.id} className="border-b border-zinc-800/50 hover:bg-zinc-900/30">
+                                                    <td className="py-3 px-2 text-white text-sm">
+                                                        {new Date(user.created_at).toLocaleDateString()}
+                                                    </td>
+                                                    <td className="py-3 px-2 text-zinc-300 font-mono text-sm">
+                                                        <a 
+                                                            href={`https://bscscan.com/address/${user.wallet_address}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="hover:text-gold"
+                                                        >
+                                                            {user.wallet_address?.slice(0, 8)}...{user.wallet_address?.slice(-6)}
+                                                        </a>
+                                                    </td>
+                                                    <td className="py-3 px-2 text-gold font-mono text-sm">
+                                                        {user.referral_code}
+                                                    </td>
+                                                    <td className="py-3 px-2 text-white font-mono text-sm">
+                                                        ${user.total_purchased_usdt?.toFixed(2) || '0.00'}
+                                                    </td>
+                                                    <td className="py-3 px-2 text-gold font-mono text-sm">
+                                                        {user.total_pio_received?.toFixed(4) || '0.0000'}
+                                                    </td>
+                                                    <td className="py-3 px-2 text-white text-sm">
+                                                        {user.direct_referrals || 0}
+                                                    </td>
+                                                    <td className="py-3 px-2">
+                                                        <Button
+                                                            size="sm"
+                                                            variant="ghost"
+                                                            onClick={() => fetchUserDetails(user.id)}
+                                                            className="text-gold hover:text-gold-light"
+                                                        >
+                                                            <Eye className="w-4 h-4 mr-1" /> View
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                    {users.length === 0 && (
+                                        <p className="text-zinc-500 text-center py-8">No users yet</p>
+                                    )}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </TabsContent>
+                    
                     {/* Offers Tab */}
                     <TabsContent value="offers">
                         <div className="grid lg:grid-cols-3 gap-6">
