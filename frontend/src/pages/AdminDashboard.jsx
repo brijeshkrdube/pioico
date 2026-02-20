@@ -212,9 +212,7 @@ const AdminDashboard = () => {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                         <Link to="/" className="flex items-center space-x-2">
-                            <div className="w-8 h-8 rounded-full gold-gradient flex items-center justify-center">
-                                <span className="text-black font-bold text-sm">P</span>
-                            </div>
+                            <img src="/logo.png" alt="PIOGOLD" className="w-8 h-8 object-contain" />
                             <span className="text-lg font-bold font-serif gold-gradient-text">PIOGOLD Admin</span>
                         </Link>
                     </div>
