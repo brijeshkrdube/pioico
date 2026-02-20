@@ -301,6 +301,10 @@ const AdminDashboard = () => {
                             <Settings className="w-4 h-4 mr-2" />
                             Settings
                         </TabsTrigger>
+                        <TabsTrigger value="users" className="data-[state=active]:bg-gold data-[state=active]:text-black">
+                            <Users className="w-4 h-4 mr-2" />
+                            Users
+                        </TabsTrigger>
                         <TabsTrigger value="offers" className="data-[state=active]:bg-gold data-[state=active]:text-black">
                             <Gift className="w-4 h-4 mr-2" />
                             Offers
@@ -310,7 +314,7 @@ const AdminDashboard = () => {
                             Orders
                         </TabsTrigger>
                         <TabsTrigger value="referrals" className="data-[state=active]:bg-gold data-[state=active]:text-black">
-                            <Users className="w-4 h-4 mr-2" />
+                            <Gift className="w-4 h-4 mr-2" />
                             Referrals
                         </TabsTrigger>
                         <TabsTrigger value="transactions" className="data-[state=active]:bg-gold data-[state=active]:text-black">
