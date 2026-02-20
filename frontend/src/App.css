@@ -1,34 +1,66 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
+/* Main App Styles */
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #0f0f10;
+.App {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
+}
+
+/* Remove default focus outlines and replace with gold */
+*:focus {
+    outline: none;
+}
+
+*:focus-visible {
+    outline: 2px solid #D4AF37;
+    outline-offset: 2px;
+}
+
+/* Custom selection color */
+::selection {
+    background-color: rgba(212, 175, 55, 0.3);
     color: white;
 }
 
-.App-link {
-    color: #61dafb;
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
 }
 
-@keyframes App-logo-spin {
+/* Hide scrollbar for chrome, safari and opera */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Loading spinner */
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
     from {
         transform: rotate(0deg);
     }
     to {
         transform: rotate(360deg);
     }
+}
+
+/* Wallet connection modal override */
+w3m-modal {
+    --w3m-z-index: 1000;
+}
+
+/* Table styling */
+table {
+    border-collapse: collapse;
+}
+
+/* Toast styling */
+[data-sonner-toaster] {
+    z-index: 9999 !important;
 }
