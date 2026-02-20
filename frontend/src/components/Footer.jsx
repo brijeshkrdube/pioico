@@ -10,9 +10,7 @@ const Footer = () => {
                     {/* Brand */}
                     <div className="col-span-1 md:col-span-2">
                         <div className="flex items-center space-x-2 mb-4">
-                            <div className="w-10 h-10 rounded-full gold-gradient flex items-center justify-center">
-                                <span className="text-black font-bold text-lg font-serif">P</span>
-                            </div>
+                            <img src="/logo.png" alt="PIOGOLD" className="w-10 h-10 object-contain" />
                             <span className="text-xl font-bold font-serif gold-gradient-text">PIOGOLD</span>
                         </div>
                         <p className="text-zinc-500 text-sm max-w-md mb-4">
