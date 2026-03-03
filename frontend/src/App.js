@@ -22,6 +22,7 @@ import Dashboard from './pages/Dashboard';
 import Referrals from './pages/Referrals';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import LegalPage from './pages/LegalPage';
 
 // Styles
 import './App.css';
@@ -63,10 +64,13 @@ function App() {
                                     <Route path="/admin" element={<AdminLayout><AdminLogin /></AdminLayout>} />
                                     <Route path="/admin/dashboard" element={<AdminLayout><AdminDashboard /></AdminLayout>} />
                                     
-                                    {/* Legal Pages (placeholder) */}
-                                    <Route path="/terms" element={<PublicLayout><TermsPage /></PublicLayout>} />
-                                    <Route path="/privacy" element={<PublicLayout><PrivacyPage /></PublicLayout>} />
-                                    <Route path="/disclaimer" element={<PublicLayout><DisclaimerPage /></PublicLayout>} />
+                                    {/* Dynamic Legal Pages */}
+                                    <Route path="/legal/:slug" element={<PublicLayout><LegalPage /></PublicLayout>} />
+                                    
+                                    {/* Legacy Legal Routes - redirect to dynamic */}
+                                    <Route path="/terms" element={<PublicLayout><LegalPage /></PublicLayout>} />
+                                    <Route path="/privacy" element={<PublicLayout><LegalPage /></PublicLayout>} />
+                                    <Route path="/disclaimer" element={<PublicLayout><LegalPage /></PublicLayout>} />
                                 </Routes>
                                 
                                 {/* Toast Notifications */}
@@ -88,82 +92,5 @@ function App() {
         </WagmiProvider>
     );
 }
-
-// Simple Legal Pages
-const TermsPage = () => (
-    <div className="min-h-screen bg-obsidian pt-24 pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-serif font-bold text-white mb-8">Terms of Service</h1>
-            <div className="prose prose-invert prose-zinc max-w-none">
-                <div className="glass-card border-zinc-800 p-8 space-y-6 text-zinc-300">
-                    <h2 className="text-xl font-semibold text-white">1. Acceptance of Terms</h2>
-                    <p>By accessing and using the PIOGOLD ICO Platform, you accept and agree to be bound by these Terms of Service.</p>
-                    
-                    <h2 className="text-xl font-semibold text-white">2. ICO Participation</h2>
-                    <p>Participation in the PIOGOLD ICO is subject to availability and applicable laws. Users must ensure compliance with their local regulations regarding cryptocurrency investments.</p>
-                    
-                    <h2 className="text-xl font-semibold text-white">3. Risk Acknowledgment</h2>
-                    <p>Cryptocurrency investments carry inherent risks. The value of PIO may fluctuate based on market conditions. Past performance does not guarantee future results.</p>
-                    
-                    <h2 className="text-xl font-semibold text-white">4. No Guaranteed Returns</h2>
-                    <p>PIOGOLD does not guarantee any returns on investment. Users should only invest what they can afford to lose.</p>
-                    
-                    <h2 className="text-xl font-semibold text-white">5. Gold-Pegged Value</h2>
-                    <p>PIO is pegged to gold value, where each coin represents 1 gram of gold. The price reflects current gold market conditions.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-);
-
-const PrivacyPage = () => (
-    <div className="min-h-screen bg-obsidian pt-24 pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-serif font-bold text-white mb-8">Privacy Policy</h1>
-            <div className="glass-card border-zinc-800 p-8 space-y-6 text-zinc-300">
-                <h2 className="text-xl font-semibold text-white">Data Collection</h2>
-                <p>We collect wallet addresses and transaction data necessary for ICO operations. No personal identification information is required.</p>
-                
-                <h2 className="text-xl font-semibold text-white">Data Usage</h2>
-                <p>Collected data is used solely for processing transactions, calculating referral rewards, and platform operations.</p>
-                
-                <h2 className="text-xl font-semibold text-white">Blockchain Data</h2>
-                <p>All transactions are recorded on public blockchains (BSC and PIOGOLD) and are permanently visible.</p>
-                
-                <h2 className="text-xl font-semibold text-white">Security</h2>
-                <p>We implement industry-standard security measures including AES-256 encryption for sensitive data.</p>
-            </div>
-        </div>
-    </div>
-);
-
-const DisclaimerPage = () => (
-    <div className="min-h-screen bg-obsidian pt-24 pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-serif font-bold text-white mb-8">Risk Disclaimer</h1>
-            <div className="glass-card border-zinc-800 p-8 space-y-6 text-zinc-300">
-                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-6 mb-6">
-                    <h2 className="text-xl font-semibold text-red-400 mb-4">Important Warning</h2>
-                    <p className="text-red-300">Cryptocurrency investments are highly speculative and involve substantial risk. You may lose all of your invested capital.</p>
-                </div>
-                
-                <h2 className="text-xl font-semibold text-white">Price Volatility</h2>
-                <p>While PIO is pegged to gold value, cryptocurrency markets are volatile. Gold prices also fluctuate based on global market conditions.</p>
-                
-                <h2 className="text-xl font-semibold text-white">Gold-Pegged Pricing</h2>
-                <p>PIO is a gold-pegged cryptocurrency where 1 PIO represents 1 gram of gold value. Prices reflect current gold market conditions.</p>
-                
-                <h2 className="text-xl font-semibold text-white">No Investment Advice</h2>
-                <p>Information on this platform does not constitute financial advice. Consult with qualified professionals before investing.</p>
-                
-                <h2 className="text-xl font-semibold text-white">Regulatory Compliance</h2>
-                <p>Users are responsible for ensuring compliance with their local laws and regulations regarding cryptocurrency investments.</p>
-                
-                <h2 className="text-xl font-semibold text-white">Technical Risks</h2>
-                <p>Blockchain technology involves technical risks including smart contract vulnerabilities, network congestion, and potential loss of funds due to user error.</p>
-            </div>
-        </div>
-    </div>
-);
 
 export default App;

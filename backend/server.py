@@ -184,6 +184,34 @@ class PurchaseCalculationResponse(BaseModel):
 class ReferralPayoutUpdate(BaseModel):
     status: str  # "approved" or "paid"
 
+class TeamMemberCreate(BaseModel):
+    role: str  # CEO, CFO, COO, Marketing Head
+    name: str
+    photo_url: Optional[str] = None
+
+class TeamMemberResponse(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str
+    role: str
+    name: str
+    photo_url: Optional[str] = None
+    created_at: str
+
+class LegalDocumentCreate(BaseModel):
+    title: str
+    slug: str  # e.g., "terms", "privacy", "disclaimer"
+    content: str
+    is_active: bool = True
+
+class LegalDocumentResponse(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str
+    title: str
+    slug: str
+    content: str
+    is_active: bool
+    updated_at: str
+
 # ==================== HELPER FUNCTIONS ====================
 
 def encrypt_private_key(private_key: str) -> str:
@@ -407,13 +435,35 @@ async def get_public_settings():
     ico_start = datetime.fromisoformat(settings["ico_start_date"].replace('Z', '+00:00'))
     days_since_start = (datetime.now(timezone.utc) - ico_start).days
     
+    # Get team members
+    team = await db.team_members.find({}, {"_id": 0}).to_list(10)
+    
+    # Get active legal documents
+    legal_docs = await db.legal_documents.find({"is_active": True}, {"_id": 0, "content": 0}).to_list(10)
+    
     return {
         "gold_price_per_gram": settings["gold_price_per_gram"],
         "ico_active": settings["ico_active"],
         "ico_wallet_address": settings["ico_wallet_address"],
         "days_since_start": days_since_start,
-        "offers": offers
+        "offers": offers,
+        "team": team,
+        "legal_documents": legal_docs
     }
+
+@api_router.get("/team")
+async def get_team_members():
+    """Get all team members"""
+    team = await db.team_members.find({}, {"_id": 0}).to_list(10)
+    return team
+
+@api_router.get("/legal/{slug}")
+async def get_legal_document(slug: str):
+    """Get a legal document by slug"""
+    doc = await db.legal_documents.find_one({"slug": slug, "is_active": True}, {"_id": 0})
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return doc
 
 @api_router.post("/calculate-purchase", response_model=PurchaseCalculationResponse)
 async def calculate_purchase(data: PurchaseCalculation):
@@ -986,6 +1036,96 @@ async def get_user_details(user_id: str, admin = Depends(get_current_admin)):
             "history": referral_earnings[:20]
         }
     }
+
+# ==================== TEAM MANAGEMENT ====================
+
+@api_router.get("/admin/team")
+async def get_admin_team(admin = Depends(get_current_admin)):
+    """Get all team members"""
+    team = await db.team_members.find({}, {"_id": 0}).to_list(10)
+    return team
+
+@api_router.post("/admin/team")
+async def create_team_member(data: TeamMemberCreate, admin = Depends(get_current_admin)):
+    """Create or update team member by role"""
+    # Check if role exists
+    existing = await db.team_members.find_one({"role": data.role})
+    
+    if existing:
+        # Update existing
+        await db.team_members.update_one(
+            {"role": data.role},
+            {"$set": {
+                "name": data.name,
+                "photo_url": data.photo_url,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        return {"message": f"{data.role} updated"}
+    else:
+        # Create new
+        member = {
+            "id": str(uuid.uuid4()),
+            "role": data.role,
+            "name": data.name,
+            "photo_url": data.photo_url,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.team_members.insert_one(member)
+        return {"message": f"{data.role} added"}
+
+@api_router.delete("/admin/team/{role}")
+async def delete_team_member(role: str, admin = Depends(get_current_admin)):
+    """Delete team member by role"""
+    result = await db.team_members.delete_one({"role": role})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Team member not found")
+    return {"message": f"{role} deleted"}
+
+# ==================== LEGAL DOCUMENTS ====================
+
+@api_router.get("/admin/legal")
+async def get_admin_legal_docs(admin = Depends(get_current_admin)):
+    """Get all legal documents"""
+    docs = await db.legal_documents.find({}, {"_id": 0}).to_list(20)
+    return docs
+
+@api_router.post("/admin/legal")
+async def create_legal_document(data: LegalDocumentCreate, admin = Depends(get_current_admin)):
+    """Create or update legal document by slug"""
+    existing = await db.legal_documents.find_one({"slug": data.slug})
+    
+    if existing:
+        await db.legal_documents.update_one(
+            {"slug": data.slug},
+            {"$set": {
+                "title": data.title,
+                "content": data.content,
+                "is_active": data.is_active,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        return {"message": f"Document '{data.slug}' updated"}
+    else:
+        doc = {
+            "id": str(uuid.uuid4()),
+            "title": data.title,
+            "slug": data.slug,
+            "content": data.content,
+            "is_active": data.is_active,
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.legal_documents.insert_one(doc)
+        return {"message": f"Document '{data.slug}' created"}
+
+@api_router.delete("/admin/legal/{slug}")
+async def delete_legal_document(slug: str, admin = Depends(get_current_admin)):
+    """Delete legal document by slug"""
+    result = await db.legal_documents.delete_one({"slug": slug})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Document not found")
+    return {"message": f"Document '{slug}' deleted"}
 
 # Include the router in the main app
 app.include_router(api_router)

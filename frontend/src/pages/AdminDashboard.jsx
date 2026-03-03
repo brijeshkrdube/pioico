@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
     Settings, Users, Package, CreditCard, Gift, LogOut, DollarSign,
     Coins, PauseCircle, PlayCircle, Loader2, RefreshCw, AlertTriangle,
-    Eye, X, ChevronDown, ChevronUp, Wallet
+    Eye, X, ChevronDown, ChevronUp, Wallet, UserCircle, FileText, Trash2
 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -59,6 +59,23 @@ const AdminDashboard = () => {
         is_active: true
     });
     
+    // Team members
+    const [teamMembers, setTeamMembers] = useState([]);
+    const [teamForm, setTeamForm] = useState({
+        role: 'CEO',
+        name: '',
+        photo_url: ''
+    });
+    
+    // Legal documents
+    const [legalDocs, setLegalDocs] = useState([]);
+    const [legalForm, setLegalForm] = useState({
+        title: '',
+        slug: '',
+        content: '',
+        is_active: true
+    });
+    
     useEffect(() => {
         if (!isAuthenticated) {
             navigate('/admin');
@@ -79,6 +96,17 @@ const AdminDashboard = () => {
                 getReferrals(),
                 getUsers()
             ]);
+            
+            // Load team and legal docs
+            const teamRes = await axios.get(`${API_URL}/admin/team`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const legalRes = await axios.get(`${API_URL}/admin/legal`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            
+            setTeamMembers(teamRes.data || []);
+            setLegalDocs(legalRes.data || []);
             
             setSettings(settingsData);
             setStats(statsData);
@@ -193,6 +221,62 @@ const AdminDashboard = () => {
             loadData();
         } catch (err) {
             toast.error('Failed to update referral');
+        }
+    };
+    
+    // Team handlers
+    const handleSaveTeamMember = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post(`${API_URL}/admin/team`, teamForm, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            toast.success(`${teamForm.role} saved!`);
+            setTeamForm({ role: 'CEO', name: '', photo_url: '' });
+            loadData();
+        } catch (err) {
+            toast.error('Failed to save team member');
+        }
+    };
+    
+    const handleDeleteTeamMember = async (role) => {
+        if (!window.confirm(`Delete ${role}?`)) return;
+        try {
+            await axios.delete(`${API_URL}/admin/team/${role}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            toast.success(`${role} deleted`);
+            loadData();
+        } catch (err) {
+            toast.error('Failed to delete team member');
+        }
+    };
+    
+    // Legal handlers
+    const handleSaveLegalDoc = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.post(`${API_URL}/admin/legal`, legalForm, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            toast.success(`Document saved!`);
+            setLegalForm({ title: '', slug: '', content: '', is_active: true });
+            loadData();
+        } catch (err) {
+            toast.error('Failed to save document');
+        }
+    };
+    
+    const handleDeleteLegalDoc = async (slug) => {
+        if (!window.confirm(`Delete ${slug}?`)) return;
+        try {
+            await axios.delete(`${API_URL}/admin/legal/${slug}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            toast.success(`Document deleted`);
+            loadData();
+        } catch (err) {
+            toast.error('Failed to delete document');
         }
     };
     
@@ -318,6 +402,14 @@ const AdminDashboard = () => {
                         <TabsTrigger value="transactions" className="data-[state=active]:bg-gold data-[state=active]:text-black">
                             <CreditCard className="w-4 h-4 mr-2" />
                             Transactions
+                        </TabsTrigger>
+                        <TabsTrigger value="team" className="data-[state=active]:bg-gold data-[state=active]:text-black">
+                            <UserCircle className="w-4 h-4 mr-2" />
+                            Team
+                        </TabsTrigger>
+                        <TabsTrigger value="legal" className="data-[state=active]:bg-gold data-[state=active]:text-black">
+                            <FileText className="w-4 h-4 mr-2" />
+                            Legal
                         </TabsTrigger>
                     </TabsList>
                     
@@ -825,6 +917,213 @@ const AdminDashboard = () => {
                                 </div>
                             </CardContent>
                         </Card>
+                    </TabsContent>
+                    
+                    {/* Team Tab */}
+                    <TabsContent value="team">
+                        <div className="grid lg:grid-cols-3 gap-6">
+                            {/* Add/Edit Team Member */}
+                            <Card className="glass-card border-zinc-800">
+                                <CardHeader>
+                                    <CardTitle className="font-serif text-white">Add/Edit Team Member</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <form onSubmit={handleSaveTeamMember} className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Label className="text-zinc-400">Role</Label>
+                                            <select
+                                                value={teamForm.role}
+                                                onChange={(e) => setTeamForm({ ...teamForm, role: e.target.value })}
+                                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-md h-10 px-3 text-white"
+                                            >
+                                                <option value="CEO">CEO</option>
+                                                <option value="CFO">CFO</option>
+                                                <option value="COO">COO</option>
+                                                <option value="Marketing Head">Marketing Head</option>
+                                            </select>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-zinc-400">Name</Label>
+                                            <Input
+                                                value={teamForm.name}
+                                                onChange={(e) => setTeamForm({ ...teamForm, name: e.target.value })}
+                                                placeholder="John Doe"
+                                                className="bg-zinc-900/50 border-zinc-800"
+                                                required
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-zinc-400">Photo URL</Label>
+                                            <Input
+                                                value={teamForm.photo_url}
+                                                onChange={(e) => setTeamForm({ ...teamForm, photo_url: e.target.value })}
+                                                placeholder="https://example.com/photo.jpg"
+                                                className="bg-zinc-900/50 border-zinc-800"
+                                            />
+                                        </div>
+                                        <Button type="submit" className="w-full gold-gradient text-black font-semibold">
+                                            Save Team Member
+                                        </Button>
+                                    </form>
+                                </CardContent>
+                            </Card>
+                            
+                            {/* Current Team */}
+                            <Card className="glass-card border-zinc-800 lg:col-span-2">
+                                <CardHeader>
+                                    <CardTitle className="font-serif text-white">Current Team ({teamMembers.length})</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {teamMembers.length > 0 ? (
+                                        <div className="grid sm:grid-cols-2 gap-4">
+                                            {teamMembers.map((member) => (
+                                                <div
+                                                    key={member.id}
+                                                    className="flex items-center justify-between p-4 bg-zinc-900/50 rounded-lg border border-zinc-800"
+                                                >
+                                                    <div className="flex items-center space-x-4">
+                                                        {member.photo_url ? (
+                                                            <img 
+                                                                src={member.photo_url} 
+                                                                alt={member.name}
+                                                                className="w-12 h-12 rounded-full object-cover"
+                                                            />
+                                                        ) : (
+                                                            <div className="w-12 h-12 rounded-full bg-gold/20 flex items-center justify-center">
+                                                                <UserCircle className="w-6 h-6 text-gold" />
+                                                            </div>
+                                                        )}
+                                                        <div>
+                                                            <p className="text-white font-medium">{member.name}</p>
+                                                            <p className="text-gold text-sm">{member.role}</p>
+                                                        </div>
+                                                    </div>
+                                                    <Button
+                                                        variant="ghost"
+                                                        size="sm"
+                                                        onClick={() => handleDeleteTeamMember(member.role)}
+                                                        className="text-red-500 hover:text-red-400"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="text-zinc-500 text-center py-8">No team members added yet</p>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </TabsContent>
+                    
+                    {/* Legal Tab */}
+                    <TabsContent value="legal">
+                        <div className="grid lg:grid-cols-2 gap-6">
+                            {/* Add/Edit Legal Document */}
+                            <Card className="glass-card border-zinc-800">
+                                <CardHeader>
+                                    <CardTitle className="font-serif text-white">Add/Edit Legal Document</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <form onSubmit={handleSaveLegalDoc} className="space-y-4">
+                                        <div className="space-y-2">
+                                            <Label className="text-zinc-400">Title</Label>
+                                            <Input
+                                                value={legalForm.title}
+                                                onChange={(e) => setLegalForm({ ...legalForm, title: e.target.value })}
+                                                placeholder="Terms of Service"
+                                                className="bg-zinc-900/50 border-zinc-800"
+                                                required
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-zinc-400">Slug (URL path)</Label>
+                                            <Input
+                                                value={legalForm.slug}
+                                                onChange={(e) => setLegalForm({ ...legalForm, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })}
+                                                placeholder="terms-of-service"
+                                                className="bg-zinc-900/50 border-zinc-800"
+                                                required
+                                            />
+                                            <p className="text-zinc-600 text-xs">Will be accessible at /legal/{legalForm.slug || 'slug'}</p>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-zinc-400">Content</Label>
+                                            <textarea
+                                                value={legalForm.content}
+                                                onChange={(e) => setLegalForm({ ...legalForm, content: e.target.value })}
+                                                placeholder="Enter document content..."
+                                                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-md p-3 text-white min-h-[200px] focus:border-gold focus:outline-none"
+                                                required
+                                            />
+                                        </div>
+                                        <div className="flex items-center space-x-2">
+                                            <Switch
+                                                checked={legalForm.is_active}
+                                                onCheckedChange={(checked) => setLegalForm({ ...legalForm, is_active: checked })}
+                                            />
+                                            <Label className="text-zinc-400">Active</Label>
+                                        </div>
+                                        <Button type="submit" className="w-full gold-gradient text-black font-semibold">
+                                            Save Document
+                                        </Button>
+                                    </form>
+                                </CardContent>
+                            </Card>
+                            
+                            {/* Current Documents */}
+                            <Card className="glass-card border-zinc-800">
+                                <CardHeader>
+                                    <CardTitle className="font-serif text-white">Legal Documents ({legalDocs.length})</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {legalDocs.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {legalDocs.map((doc) => (
+                                                <div
+                                                    key={doc.id}
+                                                    className="flex items-center justify-between p-4 bg-zinc-900/50 rounded-lg border border-zinc-800"
+                                                >
+                                                    <div>
+                                                        <p className="text-white font-medium">{doc.title}</p>
+                                                        <p className="text-zinc-500 text-sm">/legal/{doc.slug}</p>
+                                                    </div>
+                                                    <div className="flex items-center space-x-2">
+                                                        <span className={`text-xs px-2 py-1 rounded ${doc.is_active ? 'bg-green-500/20 text-green-500' : 'bg-zinc-700 text-zinc-400'}`}>
+                                                            {doc.is_active ? 'Active' : 'Inactive'}
+                                                        </span>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => setLegalForm({
+                                                                title: doc.title,
+                                                                slug: doc.slug,
+                                                                content: doc.content || '',
+                                                                is_active: doc.is_active
+                                                            })}
+                                                            className="text-gold hover:text-gold-light"
+                                                        >
+                                                            Edit
+                                                        </Button>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={() => handleDeleteLegalDoc(doc.slug)}
+                                                            className="text-red-500 hover:text-red-400"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="text-zinc-500 text-center py-8">No legal documents yet. Add Terms, Privacy Policy, etc.</p>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </div>
                     </TabsContent>
                 </Tabs>
             </div>

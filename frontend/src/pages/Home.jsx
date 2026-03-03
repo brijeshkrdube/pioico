@@ -270,6 +270,57 @@ const Home = () => {
                 </section>
             )}
             
+            {/* Team Section */}
+            {settings?.team?.length > 0 && (
+                <section className="py-20 relative">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-center mb-12"
+                        >
+                            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-4">
+                                Meet Our <span className="gold-gradient-text">Team</span>
+                            </h2>
+                            <p className="text-zinc-400">
+                                The leadership behind PIOGOLD
+                            </p>
+                        </motion.div>
+                        
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {settings.team.map((member, idx) => (
+                                <motion.div
+                                    key={member.id || idx}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ delay: idx * 0.1 }}
+                                >
+                                    <Card className="glass-card border-zinc-800 hover:border-gold/30 transition-all duration-300 overflow-hidden">
+                                        <CardContent className="p-6 text-center">
+                                            {member.photo_url ? (
+                                                <img 
+                                                    src={member.photo_url} 
+                                                    alt={member.name}
+                                                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-gold/30"
+                                                />
+                                            ) : (
+                                                <div className="w-24 h-24 rounded-full mx-auto mb-4 bg-gold/20 flex items-center justify-center">
+                                                    <Users className="w-10 h-10 text-gold" />
+                                                </div>
+                                            )}
+                                            <h3 className="text-lg font-semibold text-white mb-1">{member.name}</h3>
+                                            <p className="text-gold text-sm">{member.role}</p>
+                                        </CardContent>
+                                    </Card>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
+            
             {/* CTA Section */}
             <section className="py-20 relative overflow-hidden">
                 <div className="absolute inset-0 bg-gold-glow opacity-20" />

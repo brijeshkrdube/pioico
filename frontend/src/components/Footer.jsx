@@ -1,8 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
+import axios from 'axios';
+
+const API_URL = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const Footer = () => {
+    const [legalDocs, setLegalDocs] = useState([]);
+    
+    useEffect(() => {
+        const fetchLegalDocs = async () => {
+            try {
+                const response = await axios.get(`${API_URL}/settings/public`);
+                setLegalDocs(response.data.legal_documents || []);
+            } catch (err) {
+                console.error('Error fetching legal docs:', err);
+            }
+        };
+        fetchLegalDocs();
+    }, []);
+    
     return (
         <footer className="border-t border-zinc-800 bg-obsidian">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -51,25 +68,40 @@ const Footer = () => {
                         </ul>
                     </div>
                     
-                    {/* Legal */}
+                    {/* Legal - Dynamic */}
                     <div>
                         <h4 className="text-white font-semibold mb-4">Legal</h4>
                         <ul className="space-y-2">
-                            <li>
-                                <Link to="/terms" className="text-zinc-400 hover:text-gold text-sm transition-colors">
-                                    Terms of Service
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/privacy" className="text-zinc-400 hover:text-gold text-sm transition-colors">
-                                    Privacy Policy
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/disclaimer" className="text-zinc-400 hover:text-gold text-sm transition-colors">
-                                    Risk Disclaimer
-                                </Link>
-                            </li>
+                            {legalDocs.length > 0 ? (
+                                legalDocs.map((doc) => (
+                                    <li key={doc.slug}>
+                                        <Link 
+                                            to={`/legal/${doc.slug}`} 
+                                            className="text-zinc-400 hover:text-gold text-sm transition-colors"
+                                        >
+                                            {doc.title}
+                                        </Link>
+                                    </li>
+                                ))
+                            ) : (
+                                <>
+                                    <li>
+                                        <Link to="/legal/terms" className="text-zinc-400 hover:text-gold text-sm transition-colors">
+                                            Terms of Service
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/legal/privacy" className="text-zinc-400 hover:text-gold text-sm transition-colors">
+                                            Privacy Policy
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/legal/disclaimer" className="text-zinc-400 hover:text-gold text-sm transition-colors">
+                                            Risk Disclaimer
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </div>
                 </div>
