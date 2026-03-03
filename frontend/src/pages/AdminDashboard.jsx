@@ -47,7 +47,8 @@ const AdminDashboard = () => {
     const [settingsForm, setSettingsForm] = useState({
         gold_price_per_gram: '',
         ico_wallet_address: '',
-        encrypted_private_key: ''
+        encrypted_private_key: '',
+        whitepaper_url: ''
     });
     
     // New offer form
@@ -119,7 +120,8 @@ const AdminDashboard = () => {
             setSettingsForm({
                 gold_price_per_gram: settingsData.gold_price_per_gram,
                 ico_wallet_address: settingsData.ico_wallet_address,
-                encrypted_private_key: ''
+                encrypted_private_key: '',
+                whitepaper_url: settingsData.whitepaper_url || ''
             });
         } catch (err) {
             toast.error('Error loading data');
@@ -160,6 +162,9 @@ const AdminDashboard = () => {
             }
             if (settingsForm.encrypted_private_key) {
                 updates.encrypted_private_key = settingsForm.encrypted_private_key;
+            }
+            if (settingsForm.whitepaper_url !== undefined) {
+                updates.whitepaper_url = settingsForm.whitepaper_url;
             }
             
             await updateSettings(updates);
@@ -524,6 +529,37 @@ const AdminDashboard = () => {
                                         className="gold-gradient text-black font-semibold"
                                     >
                                         Save Wallet Settings
+                                    </Button>
+                                </CardContent>
+                            </Card>
+                            
+                            {/* Website Settings */}
+                            <Card className="glass-card border-zinc-800 lg:col-span-2">
+                                <CardHeader>
+                                    <CardTitle className="font-serif text-white">Website Settings</CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="space-y-2">
+                                        <Label className="text-zinc-400">Whitepaper URL</Label>
+                                        <Input
+                                            type="url"
+                                            placeholder="https://example.com/whitepaper.pdf"
+                                            value={settingsForm.whitepaper_url}
+                                            onChange={(e) => setSettingsForm({ ...settingsForm, whitepaper_url: e.target.value })}
+                                            className="bg-zinc-900/50 border-zinc-800"
+                                            data-testid="whitepaper-url-input"
+                                        />
+                                        <p className="text-zinc-600 text-xs">
+                                            Link to your whitepaper PDF or document. This will display a "View Whitepaper" button on the homepage.
+                                        </p>
+                                    </div>
+                                    
+                                    <Button
+                                        onClick={handleSaveSettings}
+                                        className="gold-gradient text-black font-semibold"
+                                        data-testid="save-website-settings-btn"
+                                    >
+                                        Save Website Settings
                                     </Button>
                                 </CardContent>
                             </Card>

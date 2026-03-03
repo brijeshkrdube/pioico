@@ -160,6 +160,7 @@ class AdminSettingsUpdate(BaseModel):
     ico_active: Optional[bool] = None
     ico_wallet_address: Optional[str] = None
     encrypted_private_key: Optional[str] = None
+    whitepaper_url: Optional[str] = None
 
 class AdminSettingsResponse(BaseModel):
     model_config = ConfigDict(extra="ignore")
@@ -168,6 +169,7 @@ class AdminSettingsResponse(BaseModel):
     ico_active: bool
     ico_wallet_address: str
     has_private_key: bool
+    whitepaper_url: Optional[str] = None
 
 class PurchaseCalculation(BaseModel):
     usdt_amount: float
@@ -279,6 +281,7 @@ async def get_admin_settings():
             "ico_active": True,
             "ico_wallet_address": "",
             "encrypted_private_key": "",
+            "whitepaper_url": "",
             "created_at": datetime.now(timezone.utc).isoformat(),
             "updated_at": datetime.now(timezone.utc).isoformat()
         }
@@ -448,7 +451,8 @@ async def get_public_settings():
         "days_since_start": days_since_start,
         "offers": offers,
         "team": team,
-        "legal_documents": legal_docs
+        "legal_documents": legal_docs,
+        "whitepaper_url": settings.get("whitepaper_url", "")
     }
 
 @api_router.get("/team")
@@ -793,7 +797,8 @@ async def get_admin_settings_endpoint(admin = Depends(get_current_admin)):
         ico_start_date=settings["ico_start_date"],
         ico_active=settings["ico_active"],
         ico_wallet_address=settings.get("ico_wallet_address", ""),
-        has_private_key=bool(settings.get("encrypted_private_key"))
+        has_private_key=bool(settings.get("encrypted_private_key")),
+        whitepaper_url=settings.get("whitepaper_url", "")
     )
 
 @api_router.put("/admin/settings")
@@ -812,6 +817,8 @@ async def update_admin_settings(data: AdminSettingsUpdate, admin = Depends(get_c
     if data.encrypted_private_key is not None:
         # Encrypt the private key before storing
         update_data["encrypted_private_key"] = encrypt_private_key(data.encrypted_private_key)
+    if data.whitepaper_url is not None:
+        update_data["whitepaper_url"] = data.whitepaper_url
     
     await db.admin_settings.update_one({}, {"$set": update_data})
     return {"message": "Settings updated"}

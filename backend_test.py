@@ -4,7 +4,7 @@ import json
 from datetime import datetime
 
 class PIOGoldAPITester:
-    def __init__(self, base_url="https://pio-ico-launch.preview.emergentagent.com/api"):
+    def __init__(self, base_url="https://pio-token-presale.preview.emergentagent.com/api"):
         self.base_url = base_url
         self.token = None
         self.tests_run = 0

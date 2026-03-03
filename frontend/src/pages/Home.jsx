@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, Coins, Users, TrendingUp, ChevronRight } from 'lucide-react';
+import { ArrowRight, Shield, Coins, Users, TrendingUp, ChevronRight, FileText, Globe, Lock, Zap, CircleDollarSign, CheckCircle2 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { motion } from 'framer-motion';
@@ -117,17 +117,19 @@ const Home = () => {
                                         Buy PIO Now <ArrowRight className="ml-2 w-5 h-5" />
                                     </Link>
                                 </Button>
-                                <Button
-                                    asChild
-                                    variant="outline"
-                                    size="lg"
-                                    className="border-gold/50 text-gold hover:bg-gold/10 h-14 px-8"
-                                    data-testid="hero-learn-btn"
-                                >
-                                    <Link to="/referrals">
-                                        Earn Referrals <ChevronRight className="ml-1 w-5 h-5" />
-                                    </Link>
-                                </Button>
+                                {settings?.whitepaper_url && (
+                                    <Button
+                                        asChild
+                                        variant="outline"
+                                        size="lg"
+                                        className="border-gold/50 text-gold hover:bg-gold/10 h-14 px-8"
+                                        data-testid="hero-whitepaper-btn"
+                                    >
+                                        <a href={settings.whitepaper_url} target="_blank" rel="noopener noreferrer">
+                                            <FileText className="mr-2 w-5 h-5" /> View Whitepaper
+                                        </a>
+                                    </Button>
+                                )}
                             </div>
                         </motion.div>
                         
@@ -211,6 +213,270 @@ const Home = () => {
                                 </Card>
                             </motion.div>
                         ))}
+                    </div>
+                </div>
+            </section>
+            
+            {/* PIO – Gold-Backed Native Coin Section */}
+            <section className="py-20 bg-obsidian-light relative overflow-hidden">
+                <div className="absolute inset-0 bg-gold-glow opacity-10" />
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <motion.div
+                            initial={{ opacity: 0, x: -30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="space-y-6"
+                        >
+                            <div className="inline-flex items-center space-x-2 bg-gold/10 border border-gold/30 rounded-full px-4 py-2">
+                                <Coins className="w-4 h-4 text-gold" />
+                                <span className="text-gold text-sm font-medium">Gold-Backed Asset</span>
+                            </div>
+                            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white">
+                                PIO – <span className="gold-gradient-text">Gold-Backed</span> Native Coin
+                            </h2>
+                            <p className="text-zinc-400 text-lg leading-relaxed">
+                                PIO is the native cryptocurrency of the PIOGOLD Mainnet, uniquely designed to be backed by the value of physical gold. Each PIO token represents the equivalent value of 1 gram of gold, providing holders with a stable, tangible asset in the volatile world of cryptocurrency.
+                            </p>
+                            <div className="grid grid-cols-2 gap-4 pt-4">
+                                <div className="flex items-start space-x-3">
+                                    <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-1" />
+                                    <div>
+                                        <p className="text-white font-medium">Real Value</p>
+                                        <p className="text-zinc-500 text-sm">Backed by gold prices</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start space-x-3">
+                                    <CheckCircle2 className="w-5 h-5 text-gold flex-shrink-0 mt-1" />
+                                    <div>
+                                        <p className="text-white font-medium">Stable Growth</p>
+                                        <p className="text-zinc-500 text-sm">Less volatility</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                        
+                        <motion.div
+                            initial={{ opacity: 0, x: 30 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="relative"
+                        >
+                            <div className="absolute -inset-4 gold-gradient opacity-20 blur-3xl rounded-full" />
+                            <Card className="glass-card border-gold/20">
+                                <CardContent className="p-8 space-y-6">
+                                    <div className="flex items-center space-x-4">
+                                        <div className="w-16 h-16 rounded-full bg-gold/20 flex items-center justify-center">
+                                            <CircleDollarSign className="w-8 h-8 text-gold" />
+                                        </div>
+                                        <div>
+                                            <p className="text-zinc-400 text-sm">Value Backing</p>
+                                            <p className="text-2xl font-serif font-bold text-white">1 PIO = 1g Gold</p>
+                                        </div>
+                                    </div>
+                                    <div className="h-px bg-zinc-800" />
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between">
+                                            <span className="text-zinc-400">Network</span>
+                                            <span className="text-white font-medium">PIOGOLD Mainnet</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-zinc-400">Token Type</span>
+                                            <span className="text-gold font-medium">Native Coin</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-zinc-400">Payment</span>
+                                            <span className="text-white font-medium">USDT (BEP20)</span>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+            
+            {/* What Problem Does PIO Solve Section */}
+            <section className="py-20 relative">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-4">
+                            What Problem Does <span className="gold-gradient-text">PIO Solve?</span>
+                        </h2>
+                        <p className="text-zinc-400 max-w-3xl mx-auto text-lg">
+                            In a market plagued by extreme volatility, PIO offers a solution that bridges the gap between traditional precious metals and modern blockchain technology.
+                        </p>
+                    </motion.div>
+                    
+                    <div className="grid md:grid-cols-3 gap-8">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.1 }}
+                        >
+                            <Card className="glass-card border-zinc-800 hover:border-gold/30 transition-all duration-300 h-full">
+                                <CardContent className="p-8">
+                                    <div className="w-14 h-14 rounded-lg bg-red-500/10 flex items-center justify-center mb-6">
+                                        <TrendingUp className="w-7 h-7 text-red-500" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-white mb-3">Market Volatility</h3>
+                                    <p className="text-zinc-400">
+                                        Cryptocurrencies are known for wild price swings. PIO's gold backing provides a stable foundation, protecting your investment from extreme market fluctuations.
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                        
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                        >
+                            <Card className="glass-card border-zinc-800 hover:border-gold/30 transition-all duration-300 h-full">
+                                <CardContent className="p-8">
+                                    <div className="w-14 h-14 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6">
+                                        <Globe className="w-7 h-7 text-blue-500" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-white mb-3">Gold Accessibility</h3>
+                                    <p className="text-zinc-400">
+                                        Physical gold is difficult to store, transport, and divide. PIO makes gold investment accessible to anyone with an internet connection, with no minimum investment barriers.
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                        
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 }}
+                        >
+                            <Card className="glass-card border-zinc-800 hover:border-gold/30 transition-all duration-300 h-full">
+                                <CardContent className="p-8">
+                                    <div className="w-14 h-14 rounded-lg bg-green-500/10 flex items-center justify-center mb-6">
+                                        <Lock className="w-7 h-7 text-green-500" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-white mb-3">Trust & Transparency</h3>
+                                    <p className="text-zinc-400">
+                                        All transactions on PIOGOLD Mainnet are verifiable and immutable. The blockchain ensures complete transparency in ownership and transfers.
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+            
+            {/* Why Is PIO Different Section */}
+            <section className="py-20 bg-obsidian-light relative">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-center mb-16"
+                    >
+                        <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mb-4">
+                            Why Is <span className="gold-gradient-text">PIO Different?</span>
+                        </h2>
+                        <p className="text-zinc-400 max-w-3xl mx-auto text-lg">
+                            PIO stands apart from other cryptocurrencies and gold-backed tokens with its unique combination of features.
+                        </p>
+                    </motion.div>
+                    
+                    <div className="grid lg:grid-cols-2 gap-8">
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="space-y-6"
+                        >
+                            <div className="flex items-start space-x-4 p-6 bg-zinc-900/50 rounded-xl border border-zinc-800 hover:border-gold/30 transition-colors">
+                                <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                                    <Coins className="w-6 h-6 text-gold" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white mb-2">Native Coin Architecture</h3>
+                                    <p className="text-zinc-400 text-sm">
+                                        Unlike ERC-20 tokens, PIO is a native coin on its own mainnet, providing faster transactions, lower fees, and enhanced security.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-start space-x-4 p-6 bg-zinc-900/50 rounded-xl border border-zinc-800 hover:border-gold/30 transition-colors">
+                                <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                                    <Shield className="w-6 h-6 text-gold" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white mb-2">Enterprise-Grade Security</h3>
+                                    <p className="text-zinc-400 text-sm">
+                                        Built with AES-256 encryption and secure smart contract architecture, your assets are protected by industry-leading security standards.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-start space-x-4 p-6 bg-zinc-900/50 rounded-xl border border-zinc-800 hover:border-gold/30 transition-colors">
+                                <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                                    <Zap className="w-6 h-6 text-gold" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white mb-2">Instant Settlement</h3>
+                                    <p className="text-zinc-400 text-sm">
+                                        Receive your PIO directly to your wallet after USDT payment verification. No waiting periods, no intermediaries.
+                                    </p>
+                                </div>
+                            </div>
+                        </motion.div>
+                        
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            className="space-y-6"
+                        >
+                            <div className="flex items-start space-x-4 p-6 bg-zinc-900/50 rounded-xl border border-zinc-800 hover:border-gold/30 transition-colors">
+                                <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                                    <Users className="w-6 h-6 text-gold" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white mb-2">Rewarding Community</h3>
+                                    <p className="text-zinc-400 text-sm">
+                                        Our 3-level referral system rewards you for growing the PIOGOLD ecosystem. Earn up to 10% on your network's purchases.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-start space-x-4 p-6 bg-zinc-900/50 rounded-xl border border-zinc-800 hover:border-gold/30 transition-colors">
+                                <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                                    <CircleDollarSign className="w-6 h-6 text-gold" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white mb-2">Bonus Rewards</h3>
+                                    <p className="text-zinc-400 text-sm">
+                                        Early investors enjoy up to 20% bonus PIO on their purchases. The more you invest, the greater your rewards.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-start space-x-4 p-6 bg-zinc-900/50 rounded-xl border border-zinc-800 hover:border-gold/30 transition-colors">
+                                <div className="w-12 h-12 rounded-lg bg-gold/10 flex items-center justify-center flex-shrink-0">
+                                    <Globe className="w-6 h-6 text-gold" />
+                                </div>
+                                <div>
+                                    <h3 className="text-lg font-semibold text-white mb-2">Global Accessibility</h3>
+                                    <p className="text-zinc-400 text-sm">
+                                        Purchase PIO from anywhere in the world using your Web3 wallet. No bank accounts, no geographic restrictions.
+                                    </p>
+                                </div>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
