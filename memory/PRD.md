@@ -17,10 +17,10 @@ Build a secure, admin-controlled ICO platform for PIOGOLD (PIO), the native coin
 - Admin dashboard with JWT auth
 - AES-256 encrypted private key storage
 
-## What's Been Implemented (Feb 20, 2026)
+## What's Been Implemented
 
 ### Backend (FastAPI + MongoDB)
-- [x] User registration with wallet address
+- [x] User registration with wallet address (mandatory referral code)
 - [x] Unique referral code generation
 - [x] Order creation and processing
 - [x] USDT transaction verification on BSC
@@ -32,23 +32,32 @@ Build a secure, admin-controlled ICO platform for PIOGOLD (PIO), the native coin
 - [x] Discount offer CRUD
 - [x] Transaction audit logs
 - [x] AES-256 private key encryption
+- [x] Team members management
+- [x] Legal documents management
+- [x] Whitepaper URL configuration
 
 ### Frontend (React + WalletConnect v2)
-- [x] Dark theme with gold accents (Playfair Display + Manrope fonts)
+- [x] Dark theme with gold accents (Moonhouse + Roboto fonts)
 - [x] Homepage with ICO status, gold price, features
+- [x] NEW: "PIO – Gold-Backed Native Coin" informational section
+- [x] NEW: "What Problem Does PIO Solve?" section
+- [x] NEW: "Why Is PIO Different?" section
+- [x] NEW: Conditional "View Whitepaper" button in hero
 - [x] Buy page with real-time PIO calculator
 - [x] User dashboard with purchase history
 - [x] Referral dashboard with 3-level tree
 - [x] Admin login/setup flow
-- [x] Admin dashboard with tabs (Settings, Offers, Orders, Referrals, Transactions)
+- [x] Admin dashboard with tabs (Settings, Users, Offers, Orders, Referrals, Transactions, Team, Legal)
+- [x] NEW: Website Settings card with Whitepaper URL input
 - [x] Responsive mobile design
-- [x] Legal pages (Terms, Privacy, Disclaimer)
+- [x] Dynamic legal pages (Terms, Privacy, Disclaimer)
+- [x] Dynamic Meet the Team section
 
 ### API Endpoints
 - `GET /api/health` - Health check
-- `GET /api/settings/public` - Public ICO settings
+- `GET /api/settings/public` - Public ICO settings (includes whitepaper_url)
 - `POST /api/calculate-purchase` - Calculate PIO for USDT amount
-- `POST /api/users/register` - Register/get user by wallet
+- `POST /api/users/register` - Register user (requires referral code)
 - `GET /api/users/{wallet}/orders` - User order history
 - `GET /api/users/{wallet}/referrals` - User referral data
 - `POST /api/orders/create` - Create purchase order
@@ -56,43 +65,41 @@ Build a secure, admin-controlled ICO platform for PIOGOLD (PIO), the native coin
 - `POST /api/admin/setup` - Create first admin
 - `POST /api/admin/login` - Admin login
 - `GET /api/admin/settings` - Admin settings (protected)
-- `PUT /api/admin/settings` - Update settings (protected)
-- `GET /api/admin/offers` - List offers (protected)
-- `POST /api/admin/offers` - Create offer (protected)
-- `GET /api/admin/orders` - All orders (protected)
-- `GET /api/admin/transactions` - All transactions (protected)
-- `GET /api/admin/referrals` - All referrals (protected)
-- `GET /api/admin/stats` - Dashboard stats (protected)
+- `PUT /api/admin/settings` - Update settings including whitepaper_url (protected)
+- `GET/POST/DELETE /api/admin/team` - Team member management
+- `GET/POST/DELETE /api/admin/legal` - Legal document management
+- `GET /api/admin/users/{user_id}/details` - Detailed user info with team/earnings
 
 ## Prioritized Backlog
 
-### P0 (Required for Launch)
+### P0 (Completed)
 - [x] Core ICO purchase flow
 - [x] Admin dashboard
 - [x] Wallet connection
-- [ ] Configure ICO wallet address (admin action)
-- [ ] Configure admin private key (admin action)
+- [x] Homepage informational sections
+- [x] Admin whitepaper URL configuration
 
 ### P1 (Important)
 - [ ] Email notifications for purchase confirmation
 - [ ] Export transaction reports (CSV)
 - [ ] Rate limiting for API endpoints
+- [ ] Enhanced Referral Dashboard with analytics
 
 ### P2 (Nice to Have)
 - [ ] Multi-language support
 - [ ] Admin 2FA authentication
 - [ ] Gold price API integration (optional)
 - [ ] Automated referral payout
-
-## Next Tasks List
-1. Admin to configure ICO wallet address in dashboard
-2. Admin to set private key (will be AES-256 encrypted)
-3. Test full purchase flow with real wallets
-4. Consider adding email notifications via SendGrid
-5. Add rate limiting to prevent abuse
+- [ ] Explicit Emergency Pause feature
 
 ## Technical Stack
 - **Backend**: Python FastAPI, MongoDB, Web3.py
 - **Frontend**: React 19, WalletConnect v2, wagmi, ethers.js, Tailwind CSS, Shadcn/UI
 - **Blockchain**: BSC (USDT BEP20), PIOGOLD Mainnet (PIO native coin)
 - **Security**: JWT auth, bcrypt passwords, AES-256 private key encryption
+
+## Deployment Notes
+- User deploys to self-managed VPS
+- Backend runs on port 8002 (via systemd)
+- Nginx as reverse proxy
+- See `/app/DEPLOYMENT.md` for full deployment guide
