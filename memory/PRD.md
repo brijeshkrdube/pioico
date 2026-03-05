@@ -32,7 +32,7 @@ Build a secure, admin-controlled ICO platform for PIOGOLD (PIO), the native coin
 - [x] Discount offer CRUD
 - [x] Transaction audit logs
 - [x] AES-256 private key encryption
-- [x] Team members management
+- [x] Team members management (5 roles: CEO, CFO, COO, Marketing Head, Asia Head)
 - [x] Legal documents management
 - [x] Whitepaper URL configuration
 
@@ -45,10 +45,16 @@ Build a secure, admin-controlled ICO platform for PIOGOLD (PIO), the native coin
 - [x] NEW: Conditional "View Whitepaper" button in hero
 - [x] Buy page with real-time PIO calculator
 - [x] User dashboard with purchase history
-- [x] Referral dashboard with 3-level tree
+- [x] ENHANCED: Referral dashboard with analytics & visualizations
+  - Earnings Overview chart (AreaChart)
+  - Team Structure pie chart
+  - Earnings by Level bar chart
+  - Enhanced 5-stat cards (Team Members, Total PIO, Pending, Direct Refs, Code)
+  - Recent Activity table with status badges
 - [x] Admin login/setup flow
 - [x] Admin dashboard with tabs (Settings, Users, Offers, Orders, Referrals, Transactions, Team, Legal)
 - [x] NEW: Website Settings card with Whitepaper URL input
+- [x] NEW: Asia Head role in Team management
 - [x] Responsive mobile design
 - [x] Dynamic legal pages (Terms, Privacy, Disclaimer)
 - [x] Dynamic Meet the Team section
@@ -80,13 +86,13 @@ Build a secure, admin-controlled ICO platform for PIOGOLD (PIO), the native coin
 - [x] Admin whitepaper URL configuration
 
 ### P1 (Important)
+- [x] Enhanced Referral Dashboard with analytics & visualizations
 - [ ] Email notifications for purchase confirmation
 - [ ] Export transaction reports (CSV)
 - [ ] Rate limiting for API endpoints
-- [ ] Enhanced Referral Dashboard with analytics
 
 ### P2 (Nice to Have)
-- [ ] Multi-language support
+- [ ] Multi-language support (user deferred)
 - [ ] Admin 2FA authentication
 - [ ] Gold price API integration (optional)
 - [ ] Automated referral payout
