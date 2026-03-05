@@ -976,6 +976,7 @@ const AdminDashboard = () => {
                                                 <option value="CFO">CFO</option>
                                                 <option value="COO">COO</option>
                                                 <option value="Marketing Head">Marketing Head</option>
+                                                <option value="Asia Head">Asia Head</option>
                                             </select>
                                         </div>
                                         <div className="space-y-2">
